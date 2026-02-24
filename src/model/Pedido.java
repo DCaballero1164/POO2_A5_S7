@@ -1,20 +1,28 @@
 package model;
 
 public class Pedido {
-    //Se definen las variables de Pedido.
-    private String id;
+    private int id;
     private String direccion;
-    private String tipo;
+    private TipoPedido tipo;
+    private EstadoPedido estado;
 
-    //Constructor de la clase Pedido.
-    public Pedido(String id, String direccion, String tipo) {
+    // Constructor con ID (para consultas)
+    public Pedido(int id, String direccion, TipoPedido tipo, EstadoPedido estado) {
         this.id = id;
         this.direccion = direccion;
         this.tipo = tipo;
+        this.estado = estado;
     }
 
-    //Getter
-    public String getId() {
+    // Constructor sin ID (para inserciones)
+    public Pedido(String direccion, TipoPedido tipo, EstadoPedido estado) {
+        this.direccion = direccion;
+        this.tipo = tipo;
+        this.estado = estado;
+    }
+
+    // Getters
+    public int getId() {
         return id;
     }
 
@@ -22,10 +30,30 @@ public class Pedido {
         return direccion;
     }
 
-    public String getTipo() {
+    public TipoPedido getTipo() {
         return tipo;
     }
 
-    //Metodo util para mostrar datos en la tabla
-    public Object[] toArray() {return new Object[]{id, direccion, tipo}; }
+    public EstadoPedido getEstado() {
+        return estado;
+    }
+
+
+    // //Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setTipo(TipoPedido tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setEstado(EstadoPedido estado) {
+        this.estado = estado;
+    }
 }
+

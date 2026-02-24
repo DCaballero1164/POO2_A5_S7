@@ -43,8 +43,7 @@ public class VentanaPrincipal extends JFrame {
         asignarRepartidorIniciarEntregaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(VentanaPrincipal.this,
-                        "Modulo de entregas en construcción.");
+                new VentanaAsignarEntrega().setVisible(true);
             }
         });
     }

@@ -2,68 +2,46 @@ package view;
 
 import data.RegistroPedido;
 import model.Pedido;
+import model.TipoPedido;
+import model.EstadoPedido;
 
 import javax.swing.*;
 
 public class VentanaRegistroPedido extends JFrame {
-    private JTextField textField1;          // ID Pedido
     private JTextField textField2;          // Dirección
-    private JComboBox<String> comboBox1;    // Tipo de Pedido
-    private JButton guardarButton;          //Boton guardar
+    private JComboBox<TipoPedido> comboBox1; // Tipo de Pedido (enum)
+    private JButton guardarButton;          // Botón guardar
     private JPanel registroPanel;           // panel raíz del .form
 
     public VentanaRegistroPedido(RegistroPedido registro) {
-        setTitle("SpeedFast  -  Registro de pedido");           //Titulo
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);      //Define la accion al cerrar la ventana
-        setContentPane(registroPanel);                          // enlaza el panel del .form
-        pack();                                                 // ajusta tamaño según los componentes
+        setTitle("SpeedFast - Registro de pedido");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setContentPane(registroPanel);
+        pack();
+        setLocationRelativeTo(null);
 
-        setLocationRelativeTo(null);    //Centrar ventana
+        // Inicializar combo con valores del enum
+        comboBox1.setModel(new DefaultComboBoxModel<>(TipoPedido.values()));
 
-        //Accion del boton guardar
+        // Acción del botón guardar
         guardarButton.addActionListener(e -> {
-            try {
-                // Intentar convertir el texto a número entero
-                int id = Integer.parseInt(textField1.getText());
+            String direccion = textField2.getText();
+            TipoPedido tipo = (TipoPedido) comboBox1.getSelectedItem();
 
-                // Validar que sea positivo
-                if (id <= 0) {
-                    JOptionPane.showMessageDialog(this,
-                            "El ID debe ser un número positivo.");
-                    return;
-                }
-
-                String direccion = textField2.getText();
-                String tipo = (String) comboBox1.getSelectedItem();
-
-                if (direccion.isEmpty()) {
-                    JOptionPane.showMessageDialog(this,
-                            "La dirección es obligatoria.");
-                    return;
-                }
-
-                // Validar que el ID no exista ya en el registro
-                boolean existe = registro.getPedidos().stream()
-                        .anyMatch(p -> p.getId().equals(String.valueOf(id)));
-
-                if (existe) {
-                    JOptionPane.showMessageDialog(this,
-                            "El ID ya existe en la lista de pedidos.");
-                    return;
-                }
-
-                // Si pasa todas las validaciones, crear y guardar
-                Pedido nuevoPedido = new Pedido(String.valueOf(id), direccion, tipo);
-                registro.AgregarPedido(nuevoPedido);
-                JOptionPane.showMessageDialog(this, "Pedido agregado con éxito.");
-                dispose();
-
-            } catch (NumberFormatException ex) {
-                // Captura si el ID no es un número válido
+            if (direccion.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
-                        "El ID debe ser un número entero válido.");
+                        "La dirección es obligatoria.");
+                return;
             }
-        });
 
+            // Crear pedido con estado inicial PENDIENTE
+            Pedido nuevoPedido = new Pedido(direccion, tipo, EstadoPedido.PENDIENTE);
+
+            // Guardar en BD
+            registro.agregarPedido(nuevoPedido);
+
+            JOptionPane.showMessageDialog(this, "Pedido agregado con éxito.");
+            dispose();
+        });
     }
 }

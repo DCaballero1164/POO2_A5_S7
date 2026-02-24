@@ -1,27 +1,23 @@
 package data;
 
+import dao.PedidoDAO;
 import model.Pedido;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class RegistroPedido {
-    //Se define la lista
-    private List<Pedido> pedidos;
+    private PedidoDAO pedidoDAO;
 
-    // Metodo que crea la lista
     public RegistroPedido() {
-        pedidos = new ArrayList<>();
+        pedidoDAO = new PedidoDAO();
     }
 
-    //Metodo que agrega un pedido
-    public void AgregarPedido(Pedido pedido) {
-        pedidos.add(pedido);
+    // Guardar pedido en la BD
+    public void agregarPedido(Pedido pedido) {
+        pedidoDAO.guardar(pedido);
     }
 
-    //Metodo para obtener todos los pedidos
+    // Obtener todos los pedidos desde la BD
     public List<Pedido> getPedidos() {
-        return pedidos;
+        return pedidoDAO.listarTodos();
     }
-
 }
